@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL Interview Sheet</title>
+<style>
+:root{--bg:#f6f7fb;--panel:#fff;--text:#171923;--muted:#6b7280;--line:#e8eaf0;--accent:#6d5dfc;--accent2:#8b7fff;--easy:#138a55;--medium:#b56a00;--hard:#c53b4a;--shadow:0 10px 30px rgba(28,31,45,.06)}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#17172a,#292450);color:#fff;padding:28px 20px 34px} .wrap{max-width:1180px;margin:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em} .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#ff6b35,#ff9f1c);display:grid;place-items:center;font-weight:900}
+.hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;margin-top:34px} h1{font-size:clamp(30px,5vw,54px);line-height:1.02;margin:0;letter-spacing:-.045em;max-width:780px} .subtitle{color:#c9c7db;max-width:720px;margin:14px 0 0;line-height:1.65}
+.updated{font-size:13px;color:#aaa7c2;margin-top:12px} .hero-stat{min-width:180px;padding:18px;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px)}
+.hero-stat strong{font-size:32px;display:block} .hero-stat span{color:#c9c7db;font-size:13px}
+.toolbar{position:sticky;top:0;z-index:20;background:rgba(246,247,251,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:12px 20px}
+.controls{max-width:1180px;margin:auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center} input[type=search]{flex:1;min-width:240px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;font:inherit;outline:none} input[type=search]:focus{border-color:#aaa1ff;box-shadow:0 0 0 3px rgba(109,93,252,.1)}
+.filter,button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 13px;font:inherit;cursor:pointer} .filter.active{background:#242238;color:#fff;border-color:#242238} .progress-mini{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap}
+.progressbar{height:6px;background:#e3e5ed;border-radius:999px;overflow:hidden;width:130px;display:inline-block;vertical-align:middle;margin-left:8px} .progressbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.2s}
+main{max-width:1180px;margin:26px auto 80px;padding:0 20px} .section{background:var(--panel);border:1px solid var(--line);border-radius:20px;margin:18px 0;box-shadow:var(--shadow);overflow:hidden}
+.section-head{padding:22px 24px;display:flex;justify-content:space-between;gap:20px;align-items:center;border-bottom:1px solid var(--line)} .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:800} h2{font-size:21px;margin:5px 0 0;letter-spacing:-.025em} .section-progress{font-size:14px;color:var(--muted);background:#f6f5ff;padding:9px 12px;border-radius:10px;white-space:nowrap}
+.subsection{border-bottom:1px solid var(--line)} .subsection:last-child{border-bottom:0} summary{list-style:none;cursor:pointer;padding:16px 24px;font-weight:700;display:flex;justify-content:space-between;align-items:center;background:#fcfcfe} summary::-webkit-details-marker{display:none} summary:before{content:"›";margin-right:10px;color:var(--muted);display:inline-block;transition:.15s} details[open]>summary:before{transform:rotate(90deg)} summary>span:first-of-type{flex:1} .sub-count{font-size:12px;color:var(--muted);font-weight:500}
+.table-wrap{overflow:auto} table{width:100%;border-collapse:collapse;min-width:700px} th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;text-align:left;padding:11px 16px;border-bottom:1px solid var(--line)} th:first-child,td:first-child{width:54px;text-align:center} td{padding:13px 16px;border-bottom:1px solid #f0f1f5;font-size:14px} tbody tr:last-child td{border-bottom:0} .problem-name{font-weight:600} .problem-row.done-row .problem-name{text-decoration:line-through;color:#9a9daa} .actions{display:flex;gap:6px;flex-wrap:wrap} .action,.noteBtn{font-size:11px;padding:5px 8px;border-radius:7px;background:#f3f4f8;color:#5e6270;border:0} .noteBtn{cursor:pointer}
+.badge{font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px} .badge.easy{color:var(--easy);background:#e9f8f1} .badge.medium{color:var(--medium);background:#fff4df} .badge.hard{color:var(--hard);background:#ffebee} .muted,.empty{color:var(--muted)} .empty{padding:16px 24px;font-size:13px;background:#fffaf0}
+input.done{width:17px;height:17px;accent-color:var(--accent)} .hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:30px} 
+dialog{border:0;border-radius:18px;padding:0;box-shadow:0 25px 80px rgba(0,0,0,.25);width:min(520px,90vw)} dialog::backdrop{background:rgba(20,20,30,.45)} .dialog-body{padding:22px} textarea{width:100%;min-height:150px;resize:vertical;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit} .dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.hero-stat{display:none}.progress-mini{width:100%;margin-left:0}.section-head{padding:18px}summary{padding:14px 18px}}
+
+.progress-dashboard{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow);margin-bottom:26px}
+.progress-dashboard h2{margin:0 0 22px}.chart-layout{display:grid;grid-template-columns:220px 1fr;gap:40px;align-items:center}
+.progress-ring{--percent:0%;width:180px;height:180px;border-radius:50%;background:conic-gradient(var(--accent) var(--percent),var(--line) 0);display:grid;place-items:center;margin:auto}
+.ring-center{width:150px;height:150px;border-radius:50%;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.ring-center strong{font-size:32px;letter-spacing:-.04em}.ring-center span{font-size:13px;color:var(--muted)}
+.difficulty-chart{display:grid;gap:22px}.chart-label{display:flex;justify-content:space-between;gap:16px;margin-bottom:9px;font-size:14px}.chart-label span{color:var(--muted);font-variant-numeric:tabular-nums}.difficulty-chart progress{display:block;width:100%;height:10px;border:0;border-radius:99px;overflow:hidden;background:var(--line);appearance:none}.difficulty-chart progress::-webkit-progress-bar{background:var(--line);border-radius:99px}.difficulty-chart progress::-webkit-progress-value{background:var(--chart-color);border-radius:99px}.difficulty-chart progress::-moz-progress-bar{background:var(--chart-color);border-radius:99px}.chart-note{font-size:12px;color:var(--muted);margin:22px 0 0;line-height:1.6}
+@media(max-width:600px){.chart-layout{grid-template-columns:1fr;gap:26px}.progress-dashboard{padding:20px}}
+
+.practice-link{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:5px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--text);text-decoration:none;font-size:12px;font-weight:650;white-space:nowrap}.practice-link:hover{border-color:var(--accent);background:#f6f5ff}.practice-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.practice-logo{display:inline-block;width:23px;height:23px;background-position:center;background-repeat:no-repeat;background-size:contain;flex-shrink:0}.practice-missing{color:#c62828;background:#fff0f0;border:1px solid #f4cccc;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;white-space:nowrap}.practice-premium{font-size:10px;color:#855e08;background:#fff4d6;border-radius:4px;padding:2px 4px}.problem-name a{color:inherit;text-decoration:none}.problem-name a:hover{text-decoration:underline}.actions{align-items:center}.practice-legend{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:0 0 20px;font-size:12px;color:var(--muted)}.practice-legend span{display:inline-flex;align-items:center;gap:6px}
+.practice-logo.leetcode{background-image:url("data:image/webp;base64,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")}
+.premium{background:#fff4df;color:#875000;white-space:nowrap;margin-left:8px}
+.problem-id{font-size:12px;color:var(--muted);font-weight:500;margin-right:7px}
+.problem-row{scroll-margin-top:180px}
+
+.sheet-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.sheet-tab{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border:1px solid rgba(255,255,255,.25);border-radius:11px;color:#dedced;text-decoration:none;font-size:14px;font-weight:700;transition:background .15s,border-color .15s}
+.sheet-tab:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.5)}
+.sheet-tab[aria-current=page]{background:#fff;color:#292450;border-color:#fff}
+.sheet-tab:focus-visible{outline:3px solid #ff9f1c;outline-offset:4px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="brand"><div class="logo">//</div>SQLSheet<span style="opacity:.45">/</span> Interview Prep</div>
+<nav class="sheet-tabs" aria-label="Practice sheets"><a class="sheet-tab" href="index.html" target="_blank" rel="noopener">DSA Practice</a><a class="sheet-tab" href="sql-interview-sheet.html" aria-current="page">SQL Practice</a></nav>
+<div class="hero"><div><h1>SQL Interview Sheet</h1>
+<p class="subtitle">Practice 150 LeetCode SQL problems organized by interview pattern, from joins and aggregation to window functions and time series.</p>
+<div class="updated">63 Easy · 62 Medium · 25 Hard</div></div>
+<div class="hero-stat"><strong id="heroDone">0 / 150</strong><span>Overall progress</span></div></div>
+</div></header>
+
+<div class="toolbar"><div class="controls">
+<input id="search" type="search" aria-label="Search problems or topics" placeholder="Search problems, numbers, or topics…">
+<button class="filter active" aria-pressed="true" data-filter="all">All</button><button class="filter" aria-pressed="false" data-filter="easy">Easy</button><button class="filter" aria-pressed="false" data-filter="medium">Medium</button><button class="filter" aria-pressed="false" data-filter="hard">Hard</button>
+<button id="randomBtn">Random problem</button>
+<div class="progress-mini"><span id="progressText">0 / 150</span><span class="progressbar"><i id="bar"></i></span></div>
+</div></div>
+
+<main>
+<section class="progress-dashboard" aria-labelledby="dashboard-title">
+<h2 id="dashboard-title">Your progress</h2>
+<div class="chart-layout">
+<div class="progress-ring" id="overallChart" role="progressbar" aria-label="Overall progress" aria-valuemin="0" aria-valuemax="150" aria-valuenow="0">
+<div class="ring-center"><strong id="chartPercent">0%</strong><span id="chartTotal">0 / 454 completed</span></div>
+</div>
+<div class="difficulty-chart">
+<div style="--chart-color:var(--easy)"><div class="chart-label"><label for="chart-easy">Easy</label><span id="count-easy">0 / 63</span></div><progress id="chart-easy" value="0" max="63"></progress></div>
+<div style="--chart-color:var(--medium)"><div class="chart-label"><label for="chart-medium">Medium</label><span id="count-medium">0 / 62</span></div><progress id="chart-medium" value="0" max="62"></progress></div>
+<div style="--chart-color:var(--hard)"><div class="chart-label"><label for="chart-hard">Hard</label><span id="count-hard">0 / 25</span></div><progress id="chart-hard" value="0" max="25"></progress></div>
+</div></div>
+<p class="chart-note">Progress includes all checked problems, regardless of filters.</p>
+</section>
+<div class="practice-legend" aria-label="Practice link summary"><span><span class="practice-logo leetcode" aria-hidden="true"></span>150 LeetCode problems</span><span>71 Premium</span></div>
+<p id="emptyResults" class="empty hidden" role="status">No problems match your search and difficulty filter.</p>
+<section class="section" id="section-1">
+<div class="section-head"><div><span class="eyebrow">Topic 01</span><h2>Filtering and conditional logic</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection" open>
+<summary><span>SELECT, WHERE, and NULL</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1757 recyclable and low fat products filtering and conditional logic select, where, and null " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1757" aria-label="Mark Recyclable and Low Fat Products complete"></td>
+<td class="problem-name"><span class="problem-id">1757.</span><a href="https://leetcode.com/problems/recyclable-and-low-fat-products/" target="_blank" rel="noopener noreferrer">Recyclable and Low Fat Products</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/recyclable-and-low-fat-products/" target="_blank" rel="noopener noreferrer" aria-label="Practice Recyclable and Low Fat Products on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="584 find customer referee filtering and conditional logic select, where, and null " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-584" aria-label="Mark Find Customer Referee complete"></td>
+<td class="problem-name"><span class="problem-id">584.</span><a href="https://leetcode.com/problems/find-customer-referee/" target="_blank" rel="noopener noreferrer">Find Customer Referee</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-customer-referee/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Customer Referee on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="595 big countries filtering and conditional logic select, where, and null " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-595" aria-label="Mark Big Countries complete"></td>
+<td class="problem-name"><span class="problem-id">595.</span><a href="https://leetcode.com/problems/big-countries/" target="_blank" rel="noopener noreferrer">Big Countries</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/big-countries/" target="_blank" rel="noopener noreferrer" aria-label="Practice Big Countries on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="620 not boring movies filtering and conditional logic select, where, and null " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-620" aria-label="Mark Not Boring Movies complete"></td>
+<td class="problem-name"><span class="problem-id">620.</span><a href="https://leetcode.com/problems/not-boring-movies/" target="_blank" rel="noopener noreferrer">Not Boring Movies</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/not-boring-movies/" target="_blank" rel="noopener noreferrer" aria-label="Practice Not Boring Movies on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1683 invalid tweets filtering and conditional logic select, where, and null " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1683" aria-label="Mark Invalid Tweets complete"></td>
+<td class="problem-name"><span class="problem-id">1683.</span><a href="https://leetcode.com/problems/invalid-tweets/" target="_blank" rel="noopener noreferrer">Invalid Tweets</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/invalid-tweets/" target="_blank" rel="noopener noreferrer" aria-label="Practice Invalid Tweets on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1890 the latest login in 2020 filtering and conditional logic select, where, and null " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1890" aria-label="Mark The Latest Login in 2020 complete"></td>
+<td class="problem-name"><span class="problem-id">1890.</span><a href="https://leetcode.com/problems/the-latest-login-in-2020/" target="_blank" rel="noopener noreferrer">The Latest Login in 2020</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-latest-login-in-2020/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Latest Login in 2020 on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1821 find customers with positive revenue this year filtering and conditional logic select, where, and null premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1821" aria-label="Mark Find Customers With Positive Revenue this Year complete"></td>
+<td class="problem-name"><span class="problem-id">1821.</span><a href="https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/" target="_blank" rel="noopener noreferrer">Find Customers With Positive Revenue this Year</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-customers-with-positive-revenue-this-year/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Customers With Positive Revenue this Year on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3358 books with null ratings filtering and conditional logic select, where, and null premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-3358" aria-label="Mark Books with NULL Ratings complete"></td>
+<td class="problem-name"><span class="problem-id">3358.</span><a href="https://leetcode.com/problems/books-with-null-ratings/" target="_blank" rel="noopener noreferrer">Books with NULL Ratings</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/books-with-null-ratings/" target="_blank" rel="noopener noreferrer" aria-label="Practice Books with NULL Ratings on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>CASE, row updates, and deletes</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="610 triangle judgement filtering and conditional logic case, row updates, and deletes " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-610" aria-label="Mark Triangle Judgement complete"></td>
+<td class="problem-name"><span class="problem-id">610.</span><a href="https://leetcode.com/problems/triangle-judgement/" target="_blank" rel="noopener noreferrer">Triangle Judgement</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/triangle-judgement/" target="_blank" rel="noopener noreferrer" aria-label="Practice Triangle Judgement on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1873 calculate special bonus filtering and conditional logic case, row updates, and deletes " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1873" aria-label="Mark Calculate Special Bonus complete"></td>
+<td class="problem-name"><span class="problem-id">1873.</span><a href="https://leetcode.com/problems/calculate-special-bonus/" target="_blank" rel="noopener noreferrer">Calculate Special Bonus</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/calculate-special-bonus/" target="_blank" rel="noopener noreferrer" aria-label="Practice Calculate Special Bonus on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="3053 classifying triangles by lengths filtering and conditional logic case, row updates, and deletes premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-3053" aria-label="Mark Classifying Triangles by Lengths complete"></td>
+<td class="problem-name"><span class="problem-id">3053.</span><a href="https://leetcode.com/problems/classifying-triangles-by-lengths/" target="_blank" rel="noopener noreferrer">Classifying Triangles by Lengths</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/classifying-triangles-by-lengths/" target="_blank" rel="noopener noreferrer" aria-label="Practice Classifying Triangles by Lengths on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="627 swap sex of employees filtering and conditional logic case, row updates, and deletes " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-627" aria-label="Mark Swap Sex of Employees complete"></td>
+<td class="problem-name"><span class="problem-id">627.</span><a href="https://leetcode.com/problems/swap-sex-of-employees/" target="_blank" rel="noopener noreferrer">Swap Sex of Employees</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/swap-sex-of-employees/" target="_blank" rel="noopener noreferrer" aria-label="Practice Swap Sex of Employees on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="196 delete duplicate emails filtering and conditional logic case, row updates, and deletes " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-196" aria-label="Mark Delete Duplicate Emails complete"></td>
+<td class="problem-name"><span class="problem-id">196.</span><a href="https://leetcode.com/problems/delete-duplicate-emails/" target="_blank" rel="noopener noreferrer">Delete Duplicate Emails</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/delete-duplicate-emails/" target="_blank" rel="noopener noreferrer" aria-label="Practice Delete Duplicate Emails on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1789 primary department for each employee filtering and conditional logic case, row updates, and deletes " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1789" aria-label="Mark Primary Department for Each Employee complete"></td>
+<td class="problem-name"><span class="problem-id">1789.</span><a href="https://leetcode.com/problems/primary-department-for-each-employee/" target="_blank" rel="noopener noreferrer">Primary Department for Each Employee</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/primary-department-for-each-employee/" target="_blank" rel="noopener noreferrer" aria-label="Practice Primary Department for Each Employee on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="3051 find candidates for data scientist position filtering and conditional logic case, row updates, and deletes premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-3051" aria-label="Mark Find Candidates for Data Scientist Position complete"></td>
+<td class="problem-name"><span class="problem-id">3051.</span><a href="https://leetcode.com/problems/find-candidates-for-data-scientist-position/" target="_blank" rel="noopener noreferrer">Find Candidates for Data Scientist Position</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-candidates-for-data-scientist-position/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Candidates for Data Scientist Position on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-2">
+<div class="section-head"><div><span class="eyebrow">Topic 02</span><h2>Joins and missing matches</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>Inner, outer, and self joins</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="175 combine two tables joins and missing matches inner, outer, and self joins " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-175" aria-label="Mark Combine Two Tables complete"></td>
+<td class="problem-name"><span class="problem-id">175.</span><a href="https://leetcode.com/problems/combine-two-tables/" target="_blank" rel="noopener noreferrer">Combine Two Tables</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/combine-two-tables/" target="_blank" rel="noopener noreferrer" aria-label="Practice Combine Two Tables on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="181 employees earning more than their managers joins and missing matches inner, outer, and self joins " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-181" aria-label="Mark Employees Earning More Than Their Managers complete"></td>
+<td class="problem-name"><span class="problem-id">181.</span><a href="https://leetcode.com/problems/employees-earning-more-than-their-managers/" target="_blank" rel="noopener noreferrer">Employees Earning More Than Their Managers</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/employees-earning-more-than-their-managers/" target="_blank" rel="noopener noreferrer" aria-label="Practice Employees Earning More Than Their Managers on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="577 employee bonus joins and missing matches inner, outer, and self joins " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-577" aria-label="Mark Employee Bonus complete"></td>
+<td class="problem-name"><span class="problem-id">577.</span><a href="https://leetcode.com/problems/employee-bonus/" target="_blank" rel="noopener noreferrer">Employee Bonus</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/employee-bonus/" target="_blank" rel="noopener noreferrer" aria-label="Practice Employee Bonus on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1068 product sales analysis i joins and missing matches inner, outer, and self joins " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1068" aria-label="Mark Product Sales Analysis I complete"></td>
+<td class="problem-name"><span class="problem-id">1068.</span><a href="https://leetcode.com/problems/product-sales-analysis-i/" target="_blank" rel="noopener noreferrer">Product Sales Analysis I</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/product-sales-analysis-i/" target="_blank" rel="noopener noreferrer" aria-label="Practice Product Sales Analysis I on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1378 replace employee id with the unique identifier joins and missing matches inner, outer, and self joins " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1378" aria-label="Mark Replace Employee ID With The Unique Identifier complete"></td>
+<td class="problem-name"><span class="problem-id">1378.</span><a href="https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/" target="_blank" rel="noopener noreferrer">Replace Employee ID With The Unique Identifier</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/" target="_blank" rel="noopener noreferrer" aria-label="Practice Replace Employee ID With The Unique Identifier on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1280 students and examinations joins and missing matches inner, outer, and self joins " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1280" aria-label="Mark Students and Examinations complete"></td>
+<td class="problem-name"><span class="problem-id">1280.</span><a href="https://leetcode.com/problems/students-and-examinations/" target="_blank" rel="noopener noreferrer">Students and Examinations</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/students-and-examinations/" target="_blank" rel="noopener noreferrer" aria-label="Practice Students and Examinations on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="570 managers with at least 5 direct reports joins and missing matches inner, outer, and self joins " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-570" aria-label="Mark Managers with at Least 5 Direct Reports complete"></td>
+<td class="problem-name"><span class="problem-id">570.</span><a href="https://leetcode.com/problems/managers-with-at-least-5-direct-reports/" target="_blank" rel="noopener noreferrer">Managers with at Least 5 Direct Reports</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/managers-with-at-least-5-direct-reports/" target="_blank" rel="noopener noreferrer" aria-label="Practice Managers with at Least 5 Direct Reports on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1731 the number of employees which report to each employee joins and missing matches inner, outer, and self joins " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1731" aria-label="Mark The Number of Employees Which Report to Each Employee complete"></td>
+<td class="problem-name"><span class="problem-id">1731.</span><a href="https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/" target="_blank" rel="noopener noreferrer">The Number of Employees Which Report to Each Employee</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Number of Employees Which Report to Each Employee on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>Anti-joins and missing data</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="183 customers who never order joins and missing matches anti-joins and missing data " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-183" aria-label="Mark Customers Who Never Order complete"></td>
+<td class="problem-name"><span class="problem-id">183.</span><a href="https://leetcode.com/problems/customers-who-never-order/" target="_blank" rel="noopener noreferrer">Customers Who Never Order</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/customers-who-never-order/" target="_blank" rel="noopener noreferrer" aria-label="Practice Customers Who Never Order on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="607 sales person joins and missing matches anti-joins and missing data " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-607" aria-label="Mark Sales Person complete"></td>
+<td class="problem-name"><span class="problem-id">607.</span><a href="https://leetcode.com/problems/sales-person/" target="_blank" rel="noopener noreferrer">Sales Person</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/sales-person/" target="_blank" rel="noopener noreferrer" aria-label="Practice Sales Person on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1581 customer who visited but did not make any transactions joins and missing matches anti-joins and missing data " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1581" aria-label="Mark Customer Who Visited but Did Not Make Any Transactions complete"></td>
+<td class="problem-name"><span class="problem-id">1581.</span><a href="https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/" target="_blank" rel="noopener noreferrer">Customer Who Visited but Did Not Make Any Transactions</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/" target="_blank" rel="noopener noreferrer" aria-label="Practice Customer Who Visited but Did Not Make Any Transactions on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1965 employees with missing information joins and missing matches anti-joins and missing data " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1965" aria-label="Mark Employees With Missing Information complete"></td>
+<td class="problem-name"><span class="problem-id">1965.</span><a href="https://leetcode.com/problems/employees-with-missing-information/" target="_blank" rel="noopener noreferrer">Employees With Missing Information</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/employees-with-missing-information/" target="_blank" rel="noopener noreferrer" aria-label="Practice Employees With Missing Information on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1978 employees whose manager left the company joins and missing matches anti-joins and missing data " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1978" aria-label="Mark Employees Whose Manager Left the Company complete"></td>
+<td class="problem-name"><span class="problem-id">1978.</span><a href="https://leetcode.com/problems/employees-whose-manager-left-the-company/" target="_blank" rel="noopener noreferrer">Employees Whose Manager Left the Company</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/employees-whose-manager-left-the-company/" target="_blank" rel="noopener noreferrer" aria-label="Practice Employees Whose Manager Left the Company on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1350 students with invalid departments joins and missing matches anti-joins and missing data premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1350" aria-label="Mark Students With Invalid Departments complete"></td>
+<td class="problem-name"><span class="problem-id">1350.</span><a href="https://leetcode.com/problems/students-with-invalid-departments/" target="_blank" rel="noopener noreferrer">Students With Invalid Departments</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/students-with-invalid-departments/" target="_blank" rel="noopener noreferrer" aria-label="Practice Students With Invalid Departments on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1607 sellers with no sales joins and missing matches anti-joins and missing data premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1607" aria-label="Mark Sellers With No Sales complete"></td>
+<td class="problem-name"><span class="problem-id">1607.</span><a href="https://leetcode.com/problems/sellers-with-no-sales/" target="_blank" rel="noopener noreferrer">Sellers With No Sales</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/sellers-with-no-sales/" target="_blank" rel="noopener noreferrer" aria-label="Practice Sellers With No Sales on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-3">
+<div class="section-head"><div><span class="eyebrow">Topic 03</span><h2>Grouping and aggregation</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>GROUP BY, HAVING, and DISTINCT</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="182 duplicate emails grouping and aggregation group by, having, and distinct " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-182" aria-label="Mark Duplicate Emails complete"></td>
+<td class="problem-name"><span class="problem-id">182.</span><a href="https://leetcode.com/problems/duplicate-emails/" target="_blank" rel="noopener noreferrer">Duplicate Emails</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/duplicate-emails/" target="_blank" rel="noopener noreferrer" aria-label="Practice Duplicate Emails on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="596 classes with at least 5 students grouping and aggregation group by, having, and distinct " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-596" aria-label="Mark Classes With at Least 5 Students complete"></td>
+<td class="problem-name"><span class="problem-id">596.</span><a href="https://leetcode.com/problems/classes-with-at-least-5-students/" target="_blank" rel="noopener noreferrer">Classes With at Least 5 Students</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/classes-with-at-least-5-students/" target="_blank" rel="noopener noreferrer" aria-label="Practice Classes With at Least 5 Students on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="619 biggest single number grouping and aggregation group by, having, and distinct " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-619" aria-label="Mark Biggest Single Number complete"></td>
+<td class="problem-name"><span class="problem-id">619.</span><a href="https://leetcode.com/problems/biggest-single-number/" target="_blank" rel="noopener noreferrer">Biggest Single Number</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/biggest-single-number/" target="_blank" rel="noopener noreferrer" aria-label="Practice Biggest Single Number on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="586 customer placing the largest number of orders grouping and aggregation group by, having, and distinct " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-586" aria-label="Mark Customer Placing the Largest Number of Orders complete"></td>
+<td class="problem-name"><span class="problem-id">586.</span><a href="https://leetcode.com/problems/customer-placing-the-largest-number-of-orders/" target="_blank" rel="noopener noreferrer">Customer Placing the Largest Number of Orders</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/customer-placing-the-largest-number-of-orders/" target="_blank" rel="noopener noreferrer" aria-label="Practice Customer Placing the Largest Number of Orders on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1050 actors and directors who cooperated at least three times grouping and aggregation group by, having, and distinct " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1050" aria-label="Mark Actors and Directors Who Cooperated At Least Three Times complete"></td>
+<td class="problem-name"><span class="problem-id">1050.</span><a href="https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/" target="_blank" rel="noopener noreferrer">Actors and Directors Who Cooperated At Least Three Times</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/" target="_blank" rel="noopener noreferrer" aria-label="Practice Actors and Directors Who Cooperated At Least Three Times on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1729 find followers count grouping and aggregation group by, having, and distinct " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1729" aria-label="Mark Find Followers Count complete"></td>
+<td class="problem-name"><span class="problem-id">1729.</span><a href="https://leetcode.com/problems/find-followers-count/" target="_blank" rel="noopener noreferrer">Find Followers Count</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-followers-count/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Followers Count on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="2356 number of unique subjects taught by each teacher grouping and aggregation group by, having, and distinct " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-2356" aria-label="Mark Number of Unique Subjects Taught by Each Teacher complete"></td>
+<td class="problem-name"><span class="problem-id">2356.</span><a href="https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher/" target="_blank" rel="noopener noreferrer">Number of Unique Subjects Taught by Each Teacher</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher/" target="_blank" rel="noopener noreferrer" aria-label="Practice Number of Unique Subjects Taught by Each Teacher on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1126 active businesses grouping and aggregation group by, having, and distinct premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1126" aria-label="Mark Active Businesses complete"></td>
+<td class="problem-name"><span class="problem-id">1126.</span><a href="https://leetcode.com/problems/active-businesses/" target="_blank" rel="noopener noreferrer">Active Businesses</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/active-businesses/" target="_blank" rel="noopener noreferrer" aria-label="Practice Active Businesses on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>Counts, averages, and weighted averages</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1075 project employees i grouping and aggregation counts, averages, and weighted averages " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1075" aria-label="Mark Project Employees I complete"></td>
+<td class="problem-name"><span class="problem-id">1075.</span><a href="https://leetcode.com/problems/project-employees-i/" target="_blank" rel="noopener noreferrer">Project Employees I</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/project-employees-i/" target="_blank" rel="noopener noreferrer" aria-label="Practice Project Employees I on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1251 average selling price grouping and aggregation counts, averages, and weighted averages " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1251" aria-label="Mark Average Selling Price complete"></td>
+<td class="problem-name"><span class="problem-id">1251.</span><a href="https://leetcode.com/problems/average-selling-price/" target="_blank" rel="noopener noreferrer">Average Selling Price</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/average-selling-price/" target="_blank" rel="noopener noreferrer" aria-label="Practice Average Selling Price on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="580 count student number in departments grouping and aggregation counts, averages, and weighted averages premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-580" aria-label="Mark Count Student Number in Departments complete"></td>
+<td class="problem-name"><span class="problem-id">580.</span><a href="https://leetcode.com/problems/count-student-number-in-departments/" target="_blank" rel="noopener noreferrer">Count Student Number in Departments</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/count-student-number-in-departments/" target="_blank" rel="noopener noreferrer" aria-label="Practice Count Student Number in Departments on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1661 average time of process per machine grouping and aggregation counts, averages, and weighted averages " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1661" aria-label="Mark Average Time of Process per Machine complete"></td>
+<td class="problem-name"><span class="problem-id">1661.</span><a href="https://leetcode.com/problems/average-time-of-process-per-machine/" target="_blank" rel="noopener noreferrer">Average Time of Process per Machine</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/average-time-of-process-per-machine/" target="_blank" rel="noopener noreferrer" aria-label="Practice Average Time of Process per Machine on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1741 find total time spent by each employee grouping and aggregation counts, averages, and weighted averages " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1741" aria-label="Mark Find Total Time Spent by Each Employee complete"></td>
+<td class="problem-name"><span class="problem-id">1741.</span><a href="https://leetcode.com/problems/find-total-time-spent-by-each-employee/" target="_blank" rel="noopener noreferrer">Find Total Time Spent by Each Employee</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-total-time-spent-by-each-employee/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Total Time Spent by Each Employee on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1587 bank account summary ii grouping and aggregation counts, averages, and weighted averages " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1587" aria-label="Mark Bank Account Summary II complete"></td>
+<td class="problem-name"><span class="problem-id">1587.</span><a href="https://leetcode.com/problems/bank-account-summary-ii/" target="_blank" rel="noopener noreferrer">Bank Account Summary II</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/bank-account-summary-ii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Bank Account Summary II on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="2985 calculate compressed mean grouping and aggregation counts, averages, and weighted averages premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-2985" aria-label="Mark Calculate Compressed Mean complete"></td>
+<td class="problem-name"><span class="problem-id">2985.</span><a href="https://leetcode.com/problems/calculate-compressed-mean/" target="_blank" rel="noopener noreferrer">Calculate Compressed Mean</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/calculate-compressed-mean/" target="_blank" rel="noopener noreferrer" aria-label="Practice Calculate Compressed Mean on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-4">
+<div class="section-head"><div><span class="eyebrow">Topic 04</span><h2>Subqueries and set logic</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>Scalar subqueries and per-group comparisons</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="176 second highest salary subqueries and set logic scalar subqueries and per-group comparisons " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-176" aria-label="Mark Second Highest Salary complete"></td>
+<td class="problem-name"><span class="problem-id">176.</span><a href="https://leetcode.com/problems/second-highest-salary/" target="_blank" rel="noopener noreferrer">Second Highest Salary</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/second-highest-salary/" target="_blank" rel="noopener noreferrer" aria-label="Practice Second Highest Salary on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="177 nth highest salary subqueries and set logic scalar subqueries and per-group comparisons " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-177" aria-label="Mark Nth Highest Salary complete"></td>
+<td class="problem-name"><span class="problem-id">177.</span><a href="https://leetcode.com/problems/nth-highest-salary/" target="_blank" rel="noopener noreferrer">Nth Highest Salary</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/nth-highest-salary/" target="_blank" rel="noopener noreferrer" aria-label="Practice Nth Highest Salary on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="184 department highest salary subqueries and set logic scalar subqueries and per-group comparisons " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-184" aria-label="Mark Department Highest Salary complete"></td>
+<td class="problem-name"><span class="problem-id">184.</span><a href="https://leetcode.com/problems/department-highest-salary/" target="_blank" rel="noopener noreferrer">Department Highest Salary</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/department-highest-salary/" target="_blank" rel="noopener noreferrer" aria-label="Practice Department Highest Salary on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="585 investments in 2016 subqueries and set logic scalar subqueries and per-group comparisons " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-585" aria-label="Mark Investments in 2016 complete"></td>
+<td class="problem-name"><span class="problem-id">585.</span><a href="https://leetcode.com/problems/investments-in-2016/" target="_blank" rel="noopener noreferrer">Investments in 2016</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/investments-in-2016/" target="_blank" rel="noopener noreferrer" aria-label="Practice Investments in 2016 on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1867 orders with maximum quantity above average subqueries and set logic scalar subqueries and per-group comparisons premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1867" aria-label="Mark Orders With Maximum Quantity Above Average complete"></td>
+<td class="problem-name"><span class="problem-id">1867.</span><a href="https://leetcode.com/problems/orders-with-maximum-quantity-above-average/" target="_blank" rel="noopener noreferrer">Orders With Maximum Quantity Above Average</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/orders-with-maximum-quantity-above-average/" target="_blank" rel="noopener noreferrer" aria-label="Practice Orders With Maximum Quantity Above Average on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1070 product sales analysis iii subqueries and set logic scalar subqueries and per-group comparisons " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1070" aria-label="Mark Product Sales Analysis III complete"></td>
+<td class="problem-name"><span class="problem-id">1070.</span><a href="https://leetcode.com/problems/product-sales-analysis-iii/" target="_blank" rel="noopener noreferrer">Product Sales Analysis III</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/product-sales-analysis-iii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Product Sales Analysis III on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1988 find cutoff score for each school subqueries and set logic scalar subqueries and per-group comparisons premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1988" aria-label="Mark Find Cutoff Score for Each School complete"></td>
+<td class="problem-name"><span class="problem-id">1988.</span><a href="https://leetcode.com/problems/find-cutoff-score-for-each-school/" target="_blank" rel="noopener noreferrer">Find Cutoff Score for Each School</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-cutoff-score-for-each-school/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Cutoff Score for Each School on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="608 tree node subqueries and set logic scalar subqueries and per-group comparisons " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-608" aria-label="Mark Tree Node complete"></td>
+<td class="problem-name"><span class="problem-id">608.</span><a href="https://leetcode.com/problems/tree-node/" target="_blank" rel="noopener noreferrer">Tree Node</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/tree-node/" target="_blank" rel="noopener noreferrer" aria-label="Practice Tree Node on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>Relational division and set operations</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1045 customers who bought all products subqueries and set logic relational division and set operations " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1045" aria-label="Mark Customers Who Bought All Products complete"></td>
+<td class="problem-name"><span class="problem-id">1045.</span><a href="https://leetcode.com/problems/customers-who-bought-all-products/" target="_blank" rel="noopener noreferrer">Customers Who Bought All Products</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/customers-who-bought-all-products/" target="_blank" rel="noopener noreferrer" aria-label="Practice Customers Who Bought All Products on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1398 customers who bought products a and b but not c subqueries and set logic relational division and set operations premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1398" aria-label="Mark Customers Who Bought Products A and B but Not C complete"></td>
+<td class="problem-name"><span class="problem-id">1398.</span><a href="https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/" target="_blank" rel="noopener noreferrer">Customers Who Bought Products A and B but Not C</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c/" target="_blank" rel="noopener noreferrer" aria-label="Practice Customers Who Bought Products A and B but Not C on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2084 drop type 1 orders for customers with type 0 orders subqueries and set logic relational division and set operations premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2084" aria-label="Mark Drop Type 1 Orders for Customers With Type 0 Orders complete"></td>
+<td class="problem-name"><span class="problem-id">2084.</span><a href="https://leetcode.com/problems/drop-type-1-orders-for-customers-with-type-0-orders/" target="_blank" rel="noopener noreferrer">Drop Type 1 Orders for Customers With Type 0 Orders</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/drop-type-1-orders-for-customers-with-type-0-orders/" target="_blank" rel="noopener noreferrer" aria-label="Practice Drop Type 1 Orders for Customers With Type 0 Orders on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2020 number of accounts that did not stream subqueries and set logic relational division and set operations premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2020" aria-label="Mark Number of Accounts That Did Not Stream complete"></td>
+<td class="problem-name"><span class="problem-id">2020.</span><a href="https://leetcode.com/problems/number-of-accounts-that-did-not-stream/" target="_blank" rel="noopener noreferrer">Number of Accounts That Did Not Stream</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/number-of-accounts-that-did-not-stream/" target="_blank" rel="noopener noreferrer" aria-label="Practice Number of Accounts That Did Not Stream on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="602 friend requests ii: who has the most friends subqueries and set logic relational division and set operations " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-602" aria-label="Mark Friend Requests II: Who Has the Most Friends complete"></td>
+<td class="problem-name"><span class="problem-id">602.</span><a href="https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends/" target="_blank" rel="noopener noreferrer">Friend Requests II: Who Has the Most Friends</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends/" target="_blank" rel="noopener noreferrer" aria-label="Practice Friend Requests II: Who Has the Most Friends on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1907 count salary categories subqueries and set logic relational division and set operations " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1907" aria-label="Mark Count Salary Categories complete"></td>
+<td class="problem-name"><span class="problem-id">1907.</span><a href="https://leetcode.com/problems/count-salary-categories/" target="_blank" rel="noopener noreferrer">Count Salary Categories</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/count-salary-categories/" target="_blank" rel="noopener noreferrer" aria-label="Practice Count Salary Categories on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1783 grand slam titles subqueries and set logic relational division and set operations premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1783" aria-label="Mark Grand Slam Titles complete"></td>
+<td class="problem-name"><span class="problem-id">1783.</span><a href="https://leetcode.com/problems/grand-slam-titles/" target="_blank" rel="noopener noreferrer">Grand Slam Titles</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/grand-slam-titles/" target="_blank" rel="noopener noreferrer" aria-label="Practice Grand Slam Titles on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-5">
+<div class="section-head"><div><span class="eyebrow">Topic 05</span><h2>Dates, cohorts, and retention</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>Date filters and time buckets</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1141 user activity for the past 30 days i dates, cohorts, and retention date filters and time buckets " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1141" aria-label="Mark User Activity for the Past 30 Days I complete"></td>
+<td class="problem-name"><span class="problem-id">1141.</span><a href="https://leetcode.com/problems/user-activity-for-the-past-30-days-i/" target="_blank" rel="noopener noreferrer">User Activity for the Past 30 Days I</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/user-activity-for-the-past-30-days-i/" target="_blank" rel="noopener noreferrer" aria-label="Practice User Activity for the Past 30 Days I on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1193 monthly transactions i dates, cohorts, and retention date filters and time buckets " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1193" aria-label="Mark Monthly Transactions I complete"></td>
+<td class="problem-name"><span class="problem-id">1193.</span><a href="https://leetcode.com/problems/monthly-transactions-i/" target="_blank" rel="noopener noreferrer">Monthly Transactions I</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/monthly-transactions-i/" target="_blank" rel="noopener noreferrer" aria-label="Practice Monthly Transactions I on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1327 list the products ordered in a period dates, cohorts, and retention date filters and time buckets " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1327" aria-label="Mark List the Products Ordered in a Period complete"></td>
+<td class="problem-name"><span class="problem-id">1327.</span><a href="https://leetcode.com/problems/list-the-products-ordered-in-a-period/" target="_blank" rel="noopener noreferrer">List the Products Ordered in a Period</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/list-the-products-ordered-in-a-period/" target="_blank" rel="noopener noreferrer" aria-label="Practice List the Products Ordered in a Period on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1084 sales analysis iii dates, cohorts, and retention date filters and time buckets " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1084" aria-label="Mark Sales Analysis III complete"></td>
+<td class="problem-name"><span class="problem-id">1084.</span><a href="https://leetcode.com/problems/sales-analysis-iii/" target="_blank" rel="noopener noreferrer">Sales Analysis III</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/sales-analysis-iii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Sales Analysis III on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1098 unpopular books dates, cohorts, and retention date filters and time buckets premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1098" aria-label="Mark Unpopular Books complete"></td>
+<td class="problem-name"><span class="problem-id">1098.</span><a href="https://leetcode.com/problems/unpopular-books/" target="_blank" rel="noopener noreferrer">Unpopular Books</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/unpopular-books/" target="_blank" rel="noopener noreferrer" aria-label="Practice Unpopular Books on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1565 unique orders and customers per month dates, cohorts, and retention date filters and time buckets premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1565" aria-label="Mark Unique Orders and Customers Per Month complete"></td>
+<td class="problem-name"><span class="problem-id">1565.</span><a href="https://leetcode.com/problems/unique-orders-and-customers-per-month/" target="_blank" rel="noopener noreferrer">Unique Orders and Customers Per Month</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/unique-orders-and-customers-per-month/" target="_blank" rel="noopener noreferrer" aria-label="Practice Unique Orders and Customers Per Month on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3220 odd and even transactions dates, cohorts, and retention date filters and time buckets " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-3220" aria-label="Mark Odd and Even Transactions complete"></td>
+<td class="problem-name"><span class="problem-id">3220.</span><a href="https://leetcode.com/problems/odd-and-even-transactions/" target="_blank" rel="noopener noreferrer">Odd and Even Transactions</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/odd-and-even-transactions/" target="_blank" rel="noopener noreferrer" aria-label="Practice Odd and Even Transactions on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1158 market analysis i dates, cohorts, and retention date filters and time buckets " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1158" aria-label="Mark Market Analysis I complete"></td>
+<td class="problem-name"><span class="problem-id">1158.</span><a href="https://leetcode.com/problems/market-analysis-i/" target="_blank" rel="noopener noreferrer">Market Analysis I</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/market-analysis-i/" target="_blank" rel="noopener noreferrer" aria-label="Practice Market Analysis I on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>First events, activation, and retention</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="511 game play analysis i dates, cohorts, and retention first events, activation, and retention " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-511" aria-label="Mark Game Play Analysis I complete"></td>
+<td class="problem-name"><span class="problem-id">511.</span><a href="https://leetcode.com/problems/game-play-analysis-i/" target="_blank" rel="noopener noreferrer">Game Play Analysis I</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/game-play-analysis-i/" target="_blank" rel="noopener noreferrer" aria-label="Practice Game Play Analysis I on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="512 game play analysis ii dates, cohorts, and retention first events, activation, and retention premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-512" aria-label="Mark Game Play Analysis II complete"></td>
+<td class="problem-name"><span class="problem-id">512.</span><a href="https://leetcode.com/problems/game-play-analysis-ii/" target="_blank" rel="noopener noreferrer">Game Play Analysis II</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/game-play-analysis-ii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Game Play Analysis II on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="550 game play analysis iv dates, cohorts, and retention first events, activation, and retention " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-550" aria-label="Mark Game Play Analysis IV complete"></td>
+<td class="problem-name"><span class="problem-id">550.</span><a href="https://leetcode.com/problems/game-play-analysis-iv/" target="_blank" rel="noopener noreferrer">Game Play Analysis IV</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/game-play-analysis-iv/" target="_blank" rel="noopener noreferrer" aria-label="Practice Game Play Analysis IV on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1097 game play analysis v dates, cohorts, and retention first events, activation, and retention premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-1097" aria-label="Mark Game Play Analysis V complete"></td>
+<td class="problem-name"><span class="problem-id">1097.</span><a href="https://leetcode.com/problems/game-play-analysis-v/" target="_blank" rel="noopener noreferrer">Game Play Analysis V</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/game-play-analysis-v/" target="_blank" rel="noopener noreferrer" aria-label="Practice Game Play Analysis V on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1107 new users daily count dates, cohorts, and retention first events, activation, and retention premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1107" aria-label="Mark New Users Daily Count complete"></td>
+<td class="problem-name"><span class="problem-id">1107.</span><a href="https://leetcode.com/problems/new-users-daily-count/" target="_blank" rel="noopener noreferrer">New Users Daily Count</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/new-users-daily-count/" target="_blank" rel="noopener noreferrer" aria-label="Practice New Users Daily Count on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1174 immediate food delivery ii dates, cohorts, and retention first events, activation, and retention " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1174" aria-label="Mark Immediate Food Delivery II complete"></td>
+<td class="problem-name"><span class="problem-id">1174.</span><a href="https://leetcode.com/problems/immediate-food-delivery-ii/" target="_blank" rel="noopener noreferrer">Immediate Food Delivery II</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/immediate-food-delivery-ii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Immediate Food Delivery II on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="3172 second day verification dates, cohorts, and retention first events, activation, and retention premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-3172" aria-label="Mark Second Day Verification complete"></td>
+<td class="problem-name"><span class="problem-id">3172.</span><a href="https://leetcode.com/problems/second-day-verification/" target="_blank" rel="noopener noreferrer">Second Day Verification</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/second-day-verification/" target="_blank" rel="noopener noreferrer" aria-label="Practice Second Day Verification on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-6">
+<div class="section-head"><div><span class="eyebrow">Topic 06</span><h2>Ranking and top N per group</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>ROW_NUMBER, RANK, and DENSE_RANK</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="178 rank scores ranking and top n per group row_number, rank, and dense_rank " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-178" aria-label="Mark Rank Scores complete"></td>
+<td class="problem-name"><span class="problem-id">178.</span><a href="https://leetcode.com/problems/rank-scores/" target="_blank" rel="noopener noreferrer">Rank Scores</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/rank-scores/" target="_blank" rel="noopener noreferrer" aria-label="Practice Rank Scores on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="185 department top three salaries ranking and top n per group row_number, rank, and dense_rank " data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-185" aria-label="Mark Department Top Three Salaries complete"></td>
+<td class="problem-name"><span class="problem-id">185.</span><a href="https://leetcode.com/problems/department-top-three-salaries/" target="_blank" rel="noopener noreferrer">Department Top Three Salaries</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/department-top-three-salaries/" target="_blank" rel="noopener noreferrer" aria-label="Practice Department Top Three Salaries on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span></td>
+</tr>
+<tr class="problem-row" data-name="1112 highest grade for each student ranking and top n per group row_number, rank, and dense_rank premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1112" aria-label="Mark Highest Grade For Each Student complete"></td>
+<td class="problem-name"><span class="problem-id">1112.</span><a href="https://leetcode.com/problems/highest-grade-for-each-student/" target="_blank" rel="noopener noreferrer">Highest Grade For Each Student</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/highest-grade-for-each-student/" target="_blank" rel="noopener noreferrer" aria-label="Practice Highest Grade For Each Student on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1077 project employees iii ranking and top n per group row_number, rank, and dense_rank premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1077" aria-label="Mark Project Employees III complete"></td>
+<td class="problem-name"><span class="problem-id">1077.</span><a href="https://leetcode.com/problems/project-employees-iii/" target="_blank" rel="noopener noreferrer">Project Employees III</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/project-employees-iii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Project Employees III on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1369 get the second most recent activity ranking and top n per group row_number, rank, and dense_rank premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-1369" aria-label="Mark Get the Second Most Recent Activity complete"></td>
+<td class="problem-name"><span class="problem-id">1369.</span><a href="https://leetcode.com/problems/get-the-second-most-recent-activity/" target="_blank" rel="noopener noreferrer">Get the Second Most Recent Activity</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/get-the-second-most-recent-activity/" target="_blank" rel="noopener noreferrer" aria-label="Practice Get the Second Most Recent Activity on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1532 the most recent three orders ranking and top n per group row_number, rank, and dense_rank premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1532" aria-label="Mark The Most Recent Three Orders complete"></td>
+<td class="problem-name"><span class="problem-id">1532.</span><a href="https://leetcode.com/problems/the-most-recent-three-orders/" target="_blank" rel="noopener noreferrer">The Most Recent Three Orders</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-most-recent-three-orders/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Most Recent Three Orders on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1549 the most recent orders for each product ranking and top n per group row_number, rank, and dense_rank premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1549" aria-label="Mark The Most Recent Orders for Each Product complete"></td>
+<td class="problem-name"><span class="problem-id">1549.</span><a href="https://leetcode.com/problems/the-most-recent-orders-for-each-product/" target="_blank" rel="noopener noreferrer">The Most Recent Orders for Each Product</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-most-recent-orders-for-each-product/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Most Recent Orders for Each Product on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1831 maximum transaction each day ranking and top n per group row_number, rank, and dense_rank premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1831" aria-label="Mark Maximum Transaction Each Day complete"></td>
+<td class="problem-name"><span class="problem-id">1831.</span><a href="https://leetcode.com/problems/maximum-transaction-each-day/" target="_blank" rel="noopener noreferrer">Maximum Transaction Each Day</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/maximum-transaction-each-day/" target="_blank" rel="noopener noreferrer" aria-label="Practice Maximum Transaction Each Day on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>Ranking across groups and percentiles</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1596 the most frequently ordered products for each customer ranking and top n per group ranking across groups and percentiles premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1596" aria-label="Mark The Most Frequently Ordered Products for Each Customer complete"></td>
+<td class="problem-name"><span class="problem-id">1596.</span><a href="https://leetcode.com/problems/the-most-frequently-ordered-products-for-each-customer/" target="_blank" rel="noopener noreferrer">The Most Frequently Ordered Products for Each Customer</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-most-frequently-ordered-products-for-each-customer/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Most Frequently Ordered Products for Each Customer on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2346 compute the rank as a percentage ranking and top n per group ranking across groups and percentiles premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2346" aria-label="Mark Compute the Rank as a Percentage complete"></td>
+<td class="problem-name"><span class="problem-id">2346.</span><a href="https://leetcode.com/problems/compute-the-rank-as-a-percentage/" target="_blank" rel="noopener noreferrer">Compute the Rank as a Percentage</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/compute-the-rank-as-a-percentage/" target="_blank" rel="noopener noreferrer" aria-label="Practice Compute the Rank as a Percentage on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="569 median employee salary ranking and top n per group ranking across groups and percentiles premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-569" aria-label="Mark Median Employee Salary complete"></td>
+<td class="problem-name"><span class="problem-id">569.</span><a href="https://leetcode.com/problems/median-employee-salary/" target="_blank" rel="noopener noreferrer">Median Employee Salary</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/median-employee-salary/" target="_blank" rel="noopener noreferrer" aria-label="Practice Median Employee Salary on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="571 find median given frequency of numbers ranking and top n per group ranking across groups and percentiles premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-571" aria-label="Mark Find Median Given Frequency of Numbers complete"></td>
+<td class="problem-name"><span class="problem-id">571.</span><a href="https://leetcode.com/problems/find-median-given-frequency-of-numbers/" target="_blank" rel="noopener noreferrer">Find Median Given Frequency of Numbers</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-median-given-frequency-of-numbers/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Median Given Frequency of Numbers on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2175 the change in global rankings ranking and top n per group ranking across groups and percentiles premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2175" aria-label="Mark The Change in Global Rankings complete"></td>
+<td class="problem-name"><span class="problem-id">2175.</span><a href="https://leetcode.com/problems/the-change-in-global-rankings/" target="_blank" rel="noopener noreferrer">The Change in Global Rankings</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-change-in-global-rankings/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Change in Global Rankings on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3055 top percentile fraud ranking and top n per group ranking across groups and percentiles premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-3055" aria-label="Mark Top Percentile Fraud complete"></td>
+<td class="problem-name"><span class="problem-id">3055.</span><a href="https://leetcode.com/problems/top-percentile-fraud/" target="_blank" rel="noopener noreferrer">Top Percentile Fraud</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/top-percentile-fraud/" target="_blank" rel="noopener noreferrer" aria-label="Practice Top Percentile Fraud on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2991 top three wineries  ranking and top n per group ranking across groups and percentiles premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-2991" aria-label="Mark Top Three Wineries complete"></td>
+<td class="problem-name"><span class="problem-id">2991.</span><a href="https://leetcode.com/problems/top-three-wineries/" target="_blank" rel="noopener noreferrer">Top Three Wineries</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/top-three-wineries/" target="_blank" rel="noopener noreferrer" aria-label="Practice Top Three Wineries on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-7">
+<div class="section-head"><div><span class="eyebrow">Topic 07</span><h2>Window functions and time series</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>Running totals and rolling windows</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="534 game play analysis iii window functions and time series running totals and rolling windows premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-534" aria-label="Mark Game Play Analysis III complete"></td>
+<td class="problem-name"><span class="problem-id">534.</span><a href="https://leetcode.com/problems/game-play-analysis-iii/" target="_blank" rel="noopener noreferrer">Game Play Analysis III</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/game-play-analysis-iii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Game Play Analysis III on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="579 find cumulative salary of an employee window functions and time series running totals and rolling windows premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-579" aria-label="Mark Find Cumulative Salary of an Employee complete"></td>
+<td class="problem-name"><span class="problem-id">579.</span><a href="https://leetcode.com/problems/find-cumulative-salary-of-an-employee/" target="_blank" rel="noopener noreferrer">Find Cumulative Salary of an Employee</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-cumulative-salary-of-an-employee/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Cumulative Salary of an Employee on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1204 last person to fit in the bus window functions and time series running totals and rolling windows " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1204" aria-label="Mark Last Person to Fit in the Bus complete"></td>
+<td class="problem-name"><span class="problem-id">1204.</span><a href="https://leetcode.com/problems/last-person-to-fit-in-the-bus/" target="_blank" rel="noopener noreferrer">Last Person to Fit in the Bus</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/last-person-to-fit-in-the-bus/" target="_blank" rel="noopener noreferrer" aria-label="Practice Last Person to Fit in the Bus on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1308 running total for different genders window functions and time series running totals and rolling windows premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1308" aria-label="Mark Running Total for Different Genders complete"></td>
+<td class="problem-name"><span class="problem-id">1308.</span><a href="https://leetcode.com/problems/running-total-for-different-genders/" target="_blank" rel="noopener noreferrer">Running Total for Different Genders</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/running-total-for-different-genders/" target="_blank" rel="noopener noreferrer" aria-label="Practice Running Total for Different Genders on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1321 restaurant growth window functions and time series running totals and rolling windows " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1321" aria-label="Mark Restaurant Growth complete"></td>
+<td class="problem-name"><span class="problem-id">1321.</span><a href="https://leetcode.com/problems/restaurant-growth/" target="_blank" rel="noopener noreferrer">Restaurant Growth</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/restaurant-growth/" target="_blank" rel="noopener noreferrer" aria-label="Practice Restaurant Growth on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="2066 account balance window functions and time series running totals and rolling windows premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2066" aria-label="Mark Account Balance complete"></td>
+<td class="problem-name"><span class="problem-id">2066.</span><a href="https://leetcode.com/problems/account-balance/" target="_blank" rel="noopener noreferrer">Account Balance</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/account-balance/" target="_blank" rel="noopener noreferrer" aria-label="Practice Account Balance on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2854 rolling average steps window functions and time series running totals and rolling windows premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2854" aria-label="Mark Rolling Average Steps complete"></td>
+<td class="problem-name"><span class="problem-id">2854.</span><a href="https://leetcode.com/problems/rolling-average-steps/" target="_blank" rel="noopener noreferrer">Rolling Average Steps</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/rolling-average-steps/" target="_blank" rel="noopener noreferrer" aria-label="Practice Rolling Average Steps on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1393 capital gain/loss window functions and time series running totals and rolling windows " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1393" aria-label="Mark Capital Gain/Loss complete"></td>
+<td class="problem-name"><span class="problem-id">1393.</span><a href="https://leetcode.com/problems/capital-gainloss/" target="_blank" rel="noopener noreferrer">Capital Gain/Loss</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/capital-gainloss/" target="_blank" rel="noopener noreferrer" aria-label="Practice Capital Gain/Loss on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>LAG, LEAD, and point-in-time lookups</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="197 rising temperature window functions and time series lag, lead, and point-in-time lookups " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-197" aria-label="Mark Rising Temperature complete"></td>
+<td class="problem-name"><span class="problem-id">197.</span><a href="https://leetcode.com/problems/rising-temperature/" target="_blank" rel="noopener noreferrer">Rising Temperature</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/rising-temperature/" target="_blank" rel="noopener noreferrer" aria-label="Practice Rising Temperature on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1164 product price at a given date window functions and time series lag, lead, and point-in-time lookups " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1164" aria-label="Mark Product Price at a Given Date complete"></td>
+<td class="problem-name"><span class="problem-id">1164.</span><a href="https://leetcode.com/problems/product-price-at-a-given-date/" target="_blank" rel="noopener noreferrer">Product Price at a Given Date</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/product-price-at-a-given-date/" target="_blank" rel="noopener noreferrer" aria-label="Practice Product Price at a Given Date on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1709 biggest window between visits window functions and time series lag, lead, and point-in-time lookups premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1709" aria-label="Mark Biggest Window Between Visits complete"></td>
+<td class="problem-name"><span class="problem-id">1709.</span><a href="https://leetcode.com/problems/biggest-window-between-visits/" target="_blank" rel="noopener noreferrer">Biggest Window Between Visits</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/biggest-window-between-visits/" target="_blank" rel="noopener noreferrer" aria-label="Practice Biggest Window Between Visits on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1972 first and last call on the same day window functions and time series lag, lead, and point-in-time lookups premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-1972" aria-label="Mark First and Last Call On the Same Day complete"></td>
+<td class="problem-name"><span class="problem-id">1972.</span><a href="https://leetcode.com/problems/first-and-last-call-on-the-same-day/" target="_blank" rel="noopener noreferrer">First and Last Call On the Same Day</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/first-and-last-call-on-the-same-day/" target="_blank" rel="noopener noreferrer" aria-label="Practice First and Last Call On the Same Day on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2388 change null values in a table to the previous value window functions and time series lag, lead, and point-in-time lookups premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2388" aria-label="Mark Change Null Values in a Table to the Previous Value complete"></td>
+<td class="problem-name"><span class="problem-id">2388.</span><a href="https://leetcode.com/problems/change-null-values-in-a-table-to-the-previous-value/" target="_blank" rel="noopener noreferrer">Change Null Values in a Table to the Previous Value</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/change-null-values-in-a-table-to-the-previous-value/" target="_blank" rel="noopener noreferrer" aria-label="Practice Change Null Values in a Table to the Previous Value on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2986 find third transaction window functions and time series lag, lead, and point-in-time lookups premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2986" aria-label="Mark Find Third Transaction complete"></td>
+<td class="problem-name"><span class="problem-id">2986.</span><a href="https://leetcode.com/problems/find-third-transaction/" target="_blank" rel="noopener noreferrer">Find Third Transaction</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-third-transaction/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Third Transaction on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3214 year on year growth rate window functions and time series lag, lead, and point-in-time lookups premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-3214" aria-label="Mark Year on Year Growth Rate complete"></td>
+<td class="problem-name"><span class="problem-id">3214.</span><a href="https://leetcode.com/problems/year-on-year-growth-rate/" target="_blank" rel="noopener noreferrer">Year on Year Growth Rate</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/year-on-year-growth-rate/" target="_blank" rel="noopener noreferrer" aria-label="Practice Year on Year Growth Rate on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-8">
+<div class="section-head"><div><span class="eyebrow">Topic 08</span><h2>Strings and reshaping data</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>Formatting, string matching, and regex</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1667 fix names in a table strings and reshaping data formatting, string matching, and regex " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1667" aria-label="Mark Fix Names in a Table complete"></td>
+<td class="problem-name"><span class="problem-id">1667.</span><a href="https://leetcode.com/problems/fix-names-in-a-table/" target="_blank" rel="noopener noreferrer">Fix Names in a Table</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/fix-names-in-a-table/" target="_blank" rel="noopener noreferrer" aria-label="Practice Fix Names in a Table on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1517 find users with valid e-mails strings and reshaping data formatting, string matching, and regex " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1517" aria-label="Mark Find Users With Valid E-Mails complete"></td>
+<td class="problem-name"><span class="problem-id">1517.</span><a href="https://leetcode.com/problems/find-users-with-valid-e-mails/" target="_blank" rel="noopener noreferrer">Find Users With Valid E-Mails</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-users-with-valid-e-mails/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Users With Valid E-Mails on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1527 patients with a condition strings and reshaping data formatting, string matching, and regex " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1527" aria-label="Mark Patients With a Condition complete"></td>
+<td class="problem-name"><span class="problem-id">1527.</span><a href="https://leetcode.com/problems/patients-with-a-condition/" target="_blank" rel="noopener noreferrer">Patients With a Condition</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/patients-with-a-condition/" target="_blank" rel="noopener noreferrer" aria-label="Practice Patients With a Condition on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1543 fix product name format strings and reshaping data formatting, string matching, and regex premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1543" aria-label="Mark Fix Product Name Format complete"></td>
+<td class="problem-name"><span class="problem-id">1543.</span><a href="https://leetcode.com/problems/fix-product-name-format/" target="_blank" rel="noopener noreferrer">Fix Product Name Format</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/fix-product-name-format/" target="_blank" rel="noopener noreferrer" aria-label="Practice Fix Product Name Format on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3059 find all unique email domains strings and reshaping data formatting, string matching, and regex premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-3059" aria-label="Mark Find All Unique Email Domains complete"></td>
+<td class="problem-name"><span class="problem-id">3059.</span><a href="https://leetcode.com/problems/find-all-unique-email-domains/" target="_blank" rel="noopener noreferrer">Find All Unique Email Domains</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-all-unique-email-domains/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find All Unique Email Domains on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3451 find invalid ip addresses strings and reshaping data formatting, string matching, and regex " data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-3451" aria-label="Mark Find Invalid IP Addresses complete"></td>
+<td class="problem-name"><span class="problem-id">3451.</span><a href="https://leetcode.com/problems/find-invalid-ip-addresses/" target="_blank" rel="noopener noreferrer">Find Invalid IP Addresses</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-invalid-ip-addresses/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Invalid IP Addresses on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span></td>
+</tr>
+<tr class="problem-row" data-name="3374 first letter capitalization ii strings and reshaping data formatting, string matching, and regex " data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-3374" aria-label="Mark First Letter Capitalization II complete"></td>
+<td class="problem-name"><span class="problem-id">3374.</span><a href="https://leetcode.com/problems/first-letter-capitalization-ii/" target="_blank" rel="noopener noreferrer">First Letter Capitalization II</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/first-letter-capitalization-ii/" target="_blank" rel="noopener noreferrer" aria-label="Practice First Letter Capitalization II on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span></td>
+</tr>
+<tr class="problem-row" data-name="2738 count occurrences in text strings and reshaping data formatting, string matching, and regex premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2738" aria-label="Mark Count Occurrences in Text complete"></td>
+<td class="problem-name"><span class="problem-id">2738.</span><a href="https://leetcode.com/problems/count-occurrences-in-text/" target="_blank" rel="noopener noreferrer">Count Occurrences in Text</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/count-occurrences-in-text/" target="_blank" rel="noopener noreferrer" aria-label="Practice Count Occurrences in Text on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>Pivoting, unpivoting, and grouped strings</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1179 reformat department table strings and reshaping data pivoting, unpivoting, and grouped strings " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1179" aria-label="Mark Reformat Department Table complete"></td>
+<td class="problem-name"><span class="problem-id">1179.</span><a href="https://leetcode.com/problems/reformat-department-table/" target="_blank" rel="noopener noreferrer">Reformat Department Table</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/reformat-department-table/" target="_blank" rel="noopener noreferrer" aria-label="Practice Reformat Department Table on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1484 group sold products by the date strings and reshaping data pivoting, unpivoting, and grouped strings " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1484" aria-label="Mark Group Sold Products By The Date complete"></td>
+<td class="problem-name"><span class="problem-id">1484.</span><a href="https://leetcode.com/problems/group-sold-products-by-the-date/" target="_blank" rel="noopener noreferrer">Group Sold Products By The Date</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/group-sold-products-by-the-date/" target="_blank" rel="noopener noreferrer" aria-label="Practice Group Sold Products By The Date on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1777 product&#x27;s price for each store strings and reshaping data pivoting, unpivoting, and grouped strings premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1777" aria-label="Mark Product&#x27;s Price for Each Store complete"></td>
+<td class="problem-name"><span class="problem-id">1777.</span><a href="https://leetcode.com/problems/products-price-for-each-store/" target="_blank" rel="noopener noreferrer">Product&#x27;s Price for Each Store</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/products-price-for-each-store/" target="_blank" rel="noopener noreferrer" aria-label="Practice Product&#x27;s Price for Each Store on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1795 rearrange products table strings and reshaping data pivoting, unpivoting, and grouped strings " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1795" aria-label="Mark Rearrange Products Table complete"></td>
+<td class="problem-name"><span class="problem-id">1795.</span><a href="https://leetcode.com/problems/rearrange-products-table/" target="_blank" rel="noopener noreferrer">Rearrange Products Table</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/rearrange-products-table/" target="_blank" rel="noopener noreferrer" aria-label="Practice Rearrange Products Table on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="3198 find cities in each state strings and reshaping data pivoting, unpivoting, and grouped strings premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-3198" aria-label="Mark Find Cities in Each State complete"></td>
+<td class="problem-name"><span class="problem-id">3198.</span><a href="https://leetcode.com/problems/find-cities-in-each-state/" target="_blank" rel="noopener noreferrer">Find Cities in Each State</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-cities-in-each-state/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Cities in Each State on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1479 sales by day of the week strings and reshaping data pivoting, unpivoting, and grouped strings premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-1479" aria-label="Mark Sales by Day of the Week complete"></td>
+<td class="problem-name"><span class="problem-id">1479.</span><a href="https://leetcode.com/problems/sales-by-day-of-the-week/" target="_blank" rel="noopener noreferrer">Sales by Day of the Week</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/sales-by-day-of-the-week/" target="_blank" rel="noopener noreferrer" aria-label="Practice Sales by Day of the Week on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2252 dynamic pivoting of a table strings and reshaping data pivoting, unpivoting, and grouped strings premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-2252" aria-label="Mark Dynamic Pivoting of a Table complete"></td>
+<td class="problem-name"><span class="problem-id">2252.</span><a href="https://leetcode.com/problems/dynamic-pivoting-of-a-table/" target="_blank" rel="noopener noreferrer">Dynamic Pivoting of a Table</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/dynamic-pivoting-of-a-table/" target="_blank" rel="noopener noreferrer" aria-label="Practice Dynamic Pivoting of a Table on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-9">
+<div class="section-head"><div><span class="eyebrow">Topic 09</span><h2>Gaps, streaks, and time intervals</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>Gaps and islands</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="180 consecutive numbers gaps, streaks, and time intervals gaps and islands " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-180" aria-label="Mark Consecutive Numbers complete"></td>
+<td class="problem-name"><span class="problem-id">180.</span><a href="https://leetcode.com/problems/consecutive-numbers/" target="_blank" rel="noopener noreferrer">Consecutive Numbers</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/consecutive-numbers/" target="_blank" rel="noopener noreferrer" aria-label="Practice Consecutive Numbers on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="601 human traffic of stadium gaps, streaks, and time intervals gaps and islands " data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-601" aria-label="Mark Human Traffic of Stadium complete"></td>
+<td class="problem-name"><span class="problem-id">601.</span><a href="https://leetcode.com/problems/human-traffic-of-stadium/" target="_blank" rel="noopener noreferrer">Human Traffic of Stadium</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/human-traffic-of-stadium/" target="_blank" rel="noopener noreferrer" aria-label="Practice Human Traffic of Stadium on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span></td>
+</tr>
+<tr class="problem-row" data-name="603 consecutive available seats gaps, streaks, and time intervals gaps and islands premium" data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-603" aria-label="Mark Consecutive Available Seats complete"></td>
+<td class="problem-name"><span class="problem-id">603.</span><a href="https://leetcode.com/problems/consecutive-available-seats/" target="_blank" rel="noopener noreferrer">Consecutive Available Seats</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/consecutive-available-seats/" target="_blank" rel="noopener noreferrer" aria-label="Practice Consecutive Available Seats on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1225 report contiguous dates gaps, streaks, and time intervals gaps and islands premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-1225" aria-label="Mark Report Contiguous Dates complete"></td>
+<td class="problem-name"><span class="problem-id">1225.</span><a href="https://leetcode.com/problems/report-contiguous-dates/" target="_blank" rel="noopener noreferrer">Report Contiguous Dates</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/report-contiguous-dates/" target="_blank" rel="noopener noreferrer" aria-label="Practice Report Contiguous Dates on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1285 find the start and end number of continuous ranges gaps, streaks, and time intervals gaps and islands premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1285" aria-label="Mark Find the Start and End Number of Continuous Ranges complete"></td>
+<td class="problem-name"><span class="problem-id">1285.</span><a href="https://leetcode.com/problems/find-the-start-and-end-number-of-continuous-ranges/" target="_blank" rel="noopener noreferrer">Find the Start and End Number of Continuous Ranges</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-the-start-and-end-number-of-continuous-ranges/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find the Start and End Number of Continuous Ranges on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1454 active users gaps, streaks, and time intervals gaps and islands premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1454" aria-label="Mark Active Users complete"></td>
+<td class="problem-name"><span class="problem-id">1454.</span><a href="https://leetcode.com/problems/active-users/" target="_blank" rel="noopener noreferrer">Active Users</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/active-users/" target="_blank" rel="noopener noreferrer" aria-label="Practice Active Users on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2173 longest winning streak gaps, streaks, and time intervals gaps and islands premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-2173" aria-label="Mark Longest Winning Streak complete"></td>
+<td class="problem-name"><span class="problem-id">2173.</span><a href="https://leetcode.com/problems/longest-winning-streak/" target="_blank" rel="noopener noreferrer">Longest Winning Streak</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/longest-winning-streak/" target="_blank" rel="noopener noreferrer" aria-label="Practice Longest Winning Streak on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2752 customers with maximum number of transactions on consecutive days gaps, streaks, and time intervals gaps and islands premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-2752" aria-label="Mark Customers with Maximum Number of Transactions on Consecutive Days complete"></td>
+<td class="problem-name"><span class="problem-id">2752.</span><a href="https://leetcode.com/problems/customers-with-maximum-number-of-transactions-on-consecutive-days/" target="_blank" rel="noopener noreferrer">Customers with Maximum Number of Transactions on Consecutive Days</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/customers-with-maximum-number-of-transactions-on-consecutive-days/" target="_blank" rel="noopener noreferrer" aria-label="Practice Customers with Maximum Number of Transactions on Consecutive Days on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>Event matching and overlapping intervals</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="2228 users with two purchases within seven days gaps, streaks, and time intervals event matching and overlapping intervals premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2228" aria-label="Mark Users With Two Purchases Within Seven Days complete"></td>
+<td class="problem-name"><span class="problem-id">2228.</span><a href="https://leetcode.com/problems/users-with-two-purchases-within-seven-days/" target="_blank" rel="noopener noreferrer">Users With Two Purchases Within Seven Days</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/users-with-two-purchases-within-seven-days/" target="_blank" rel="noopener noreferrer" aria-label="Practice Users With Two Purchases Within Seven Days on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2688 find active users gaps, streaks, and time intervals event matching and overlapping intervals premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2688" aria-label="Mark Find Active Users complete"></td>
+<td class="problem-name"><span class="problem-id">2688.</span><a href="https://leetcode.com/problems/find-active-users/" target="_blank" rel="noopener noreferrer">Find Active Users</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-active-users/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Active Users on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2494 merge overlapping events in the same hall gaps, streaks, and time intervals event matching and overlapping intervals premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-2494" aria-label="Mark Merge Overlapping Events in the Same Hall complete"></td>
+<td class="problem-name"><span class="problem-id">2494.</span><a href="https://leetcode.com/problems/merge-overlapping-events-in-the-same-hall/" target="_blank" rel="noopener noreferrer">Merge Overlapping Events in the Same Hall</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/merge-overlapping-events-in-the-same-hall/" target="_blank" rel="noopener noreferrer" aria-label="Practice Merge Overlapping Events in the Same Hall on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3262 find overlapping shifts gaps, streaks, and time intervals event matching and overlapping intervals premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-3262" aria-label="Mark Find Overlapping Shifts complete"></td>
+<td class="problem-name"><span class="problem-id">3262.</span><a href="https://leetcode.com/problems/find-overlapping-shifts/" target="_blank" rel="noopener noreferrer">Find Overlapping Shifts</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-overlapping-shifts/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Overlapping Shifts on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3268 find overlapping shifts ii gaps, streaks, and time intervals event matching and overlapping intervals premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-3268" aria-label="Mark Find Overlapping Shifts II complete"></td>
+<td class="problem-name"><span class="problem-id">3268.</span><a href="https://leetcode.com/problems/find-overlapping-shifts-ii/" target="_blank" rel="noopener noreferrer">Find Overlapping Shifts II</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-overlapping-shifts-ii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Overlapping Shifts II on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3126 server utilization time gaps, streaks, and time intervals event matching and overlapping intervals premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-3126" aria-label="Mark Server Utilization Time complete"></td>
+<td class="problem-name"><span class="problem-id">3126.</span><a href="https://leetcode.com/problems/server-utilization-time/" target="_blank" rel="noopener noreferrer">Server Utilization Time</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/server-utilization-time/" target="_blank" rel="noopener noreferrer" aria-label="Practice Server Utilization Time on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3156 employee task duration and concurrent tasks gaps, streaks, and time intervals event matching and overlapping intervals premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-3156" aria-label="Mark Employee Task Duration and Concurrent Tasks complete"></td>
+<td class="problem-name"><span class="problem-id">3156.</span><a href="https://leetcode.com/problems/employee-task-duration-and-concurrent-tasks/" target="_blank" rel="noopener noreferrer">Employee Task Duration and Concurrent Tasks</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/employee-task-duration-and-concurrent-tasks/" target="_blank" rel="noopener noreferrer" aria-label="Practice Employee Task Duration and Concurrent Tasks on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+<section class="section" id="section-10">
+<div class="section-head"><div><span class="eyebrow">Topic 10</span><h2>Multi-step interview problems</h2></div>
+<div class="section-progress"><b class="section-done">0</b> / 15</div></div>
+<details class="subsection">
+<summary><span>Rates, funnels, and business metrics</span><span class="sub-count"><b class="sub-done">0</b> / 8</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1211 queries quality and percentage multi-step interview problems rates, funnels, and business metrics " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1211" aria-label="Mark Queries Quality and Percentage complete"></td>
+<td class="problem-name"><span class="problem-id">1211.</span><a href="https://leetcode.com/problems/queries-quality-and-percentage/" target="_blank" rel="noopener noreferrer">Queries Quality and Percentage</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/queries-quality-and-percentage/" target="_blank" rel="noopener noreferrer" aria-label="Practice Queries Quality and Percentage on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1633 percentage of users attended a contest multi-step interview problems rates, funnels, and business metrics " data-difficulty="easy">
+<td><input class="done" type="checkbox" data-id="lc-1633" aria-label="Mark Percentage of Users Attended a Contest complete"></td>
+<td class="problem-name"><span class="problem-id">1633.</span><a href="https://leetcode.com/problems/percentage-of-users-attended-a-contest/" target="_blank" rel="noopener noreferrer">Percentage of Users Attended a Contest</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/percentage-of-users-attended-a-contest/" target="_blank" rel="noopener noreferrer" aria-label="Practice Percentage of Users Attended a Contest on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge easy">Easy</span></td>
+</tr>
+<tr class="problem-row" data-name="1934 confirmation rate multi-step interview problems rates, funnels, and business metrics " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1934" aria-label="Mark Confirmation Rate complete"></td>
+<td class="problem-name"><span class="problem-id">1934.</span><a href="https://leetcode.com/problems/confirmation-rate/" target="_blank" rel="noopener noreferrer">Confirmation Rate</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/confirmation-rate/" target="_blank" rel="noopener noreferrer" aria-label="Practice Confirmation Rate on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="262 trips and users multi-step interview problems rates, funnels, and business metrics " data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-262" aria-label="Mark Trips and Users complete"></td>
+<td class="problem-name"><span class="problem-id">262.</span><a href="https://leetcode.com/problems/trips-and-users/" target="_blank" rel="noopener noreferrer">Trips and Users</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/trips-and-users/" target="_blank" rel="noopener noreferrer" aria-label="Practice Trips and Users on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span></td>
+</tr>
+<tr class="problem-row" data-name="1341 movie rating multi-step interview problems rates, funnels, and business metrics " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1341" aria-label="Mark Movie Rating complete"></td>
+<td class="problem-name"><span class="problem-id">1341.</span><a href="https://leetcode.com/problems/movie-rating/" target="_blank" rel="noopener noreferrer">Movie Rating</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/movie-rating/" target="_blank" rel="noopener noreferrer" aria-label="Practice Movie Rating on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="1205 monthly transactions ii multi-step interview problems rates, funnels, and business metrics premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1205" aria-label="Mark Monthly Transactions II complete"></td>
+<td class="problem-name"><span class="problem-id">1205.</span><a href="https://leetcode.com/problems/monthly-transactions-ii/" target="_blank" rel="noopener noreferrer">Monthly Transactions II</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/monthly-transactions-ii/" target="_blank" rel="noopener noreferrer" aria-label="Practice Monthly Transactions II on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="1127 user purchase platform multi-step interview problems rates, funnels, and business metrics premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-1127" aria-label="Mark User Purchase Platform complete"></td>
+<td class="problem-name"><span class="problem-id">1127.</span><a href="https://leetcode.com/problems/user-purchase-platform/" target="_blank" rel="noopener noreferrer">User Purchase Platform</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/user-purchase-platform/" target="_blank" rel="noopener noreferrer" aria-label="Practice User Purchase Platform on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3497 analyze subscription conversion  multi-step interview problems rates, funnels, and business metrics " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-3497" aria-label="Mark Analyze Subscription Conversion complete"></td>
+<td class="problem-name"><span class="problem-id">3497.</span><a href="https://leetcode.com/problems/analyze-subscription-conversion/" target="_blank" rel="noopener noreferrer">Analyze Subscription Conversion</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/analyze-subscription-conversion/" target="_blank" rel="noopener noreferrer" aria-label="Practice Analyze Subscription Conversion on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+</tbody></table></div></details>
+<details class="subsection">
+<summary><span>Hierarchies, recommendations, and simulations</span><span class="sub-count"><b class="sub-done">0</b> / 7</span></summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col" aria-label="Completed">✓</th><th scope="col">Problem</th><th scope="col">Practice</th><th scope="col">Difficulty</th></tr></thead>
+<tbody>
+<tr class="problem-row" data-name="1270 all people report to the given manager multi-step interview problems hierarchies, recommendations, and simulations premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1270" aria-label="Mark All People Report to the Given Manager complete"></td>
+<td class="problem-name"><span class="problem-id">1270.</span><a href="https://leetcode.com/problems/all-people-report-to-the-given-manager/" target="_blank" rel="noopener noreferrer">All People Report to the Given Manager</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/all-people-report-to-the-given-manager/" target="_blank" rel="noopener noreferrer" aria-label="Practice All People Report to the Given Manager on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3236 ceo subordinate hierarchy multi-step interview problems hierarchies, recommendations, and simulations premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-3236" aria-label="Mark CEO Subordinate Hierarchy complete"></td>
+<td class="problem-name"><span class="problem-id">3236.</span><a href="https://leetcode.com/problems/ceo-subordinate-hierarchy/" target="_blank" rel="noopener noreferrer">CEO Subordinate Hierarchy</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/ceo-subordinate-hierarchy/" target="_blank" rel="noopener noreferrer" aria-label="Practice CEO Subordinate Hierarchy on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3482 analyze organization hierarchy multi-step interview problems hierarchies, recommendations, and simulations " data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-3482" aria-label="Mark Analyze Organization Hierarchy complete"></td>
+<td class="problem-name"><span class="problem-id">3482.</span><a href="https://leetcode.com/problems/analyze-organization-hierarchy/" target="_blank" rel="noopener noreferrer">Analyze Organization Hierarchy</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/analyze-organization-hierarchy/" target="_blank" rel="noopener noreferrer" aria-label="Practice Analyze Organization Hierarchy on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span></td>
+</tr>
+<tr class="problem-row" data-name="1264 page recommendations multi-step interview problems hierarchies, recommendations, and simulations premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-1264" aria-label="Mark Page Recommendations complete"></td>
+<td class="problem-name"><span class="problem-id">1264.</span><a href="https://leetcode.com/problems/page-recommendations/" target="_blank" rel="noopener noreferrer">Page Recommendations</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/page-recommendations/" target="_blank" rel="noopener noreferrer" aria-label="Practice Page Recommendations on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="3521 find product recommendation pairs multi-step interview problems hierarchies, recommendations, and simulations " data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-3521" aria-label="Mark Find Product Recommendation Pairs complete"></td>
+<td class="problem-name"><span class="problem-id">3521.</span><a href="https://leetcode.com/problems/find-product-recommendation-pairs/" target="_blank" rel="noopener noreferrer">Find Product Recommendation Pairs</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/find-product-recommendation-pairs/" target="_blank" rel="noopener noreferrer" aria-label="Practice Find Product Recommendation Pairs on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span></td>
+</tr>
+<tr class="problem-row" data-name="2142 the number of passengers in each bus i multi-step interview problems hierarchies, recommendations, and simulations premium" data-difficulty="medium">
+<td><input class="done" type="checkbox" data-id="lc-2142" aria-label="Mark The Number of Passengers in Each Bus I complete"></td>
+<td class="problem-name"><span class="problem-id">2142.</span><a href="https://leetcode.com/problems/the-number-of-passengers-in-each-bus-i/" target="_blank" rel="noopener noreferrer">The Number of Passengers in Each Bus I</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-number-of-passengers-in-each-bus-i/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Number of Passengers in Each Bus I on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge medium">Medium</span><span class="badge premium">Premium</span></td>
+</tr>
+<tr class="problem-row" data-name="2153 the number of passengers in each bus ii multi-step interview problems hierarchies, recommendations, and simulations premium" data-difficulty="hard">
+<td><input class="done" type="checkbox" data-id="lc-2153" aria-label="Mark The Number of Passengers in Each Bus II complete"></td>
+<td class="problem-name"><span class="problem-id">2153.</span><a href="https://leetcode.com/problems/the-number-of-passengers-in-each-bus-ii/" target="_blank" rel="noopener noreferrer">The Number of Passengers in Each Bus II</a></td>
+<td><div class="actions"><a class="practice-link" href="https://leetcode.com/problems/the-number-of-passengers-in-each-bus-ii/" target="_blank" rel="noopener noreferrer" aria-label="Practice The Number of Passengers in Each Bus II on LeetCode"><span class="practice-logo leetcode" aria-hidden="true"></span>LeetCode</a><button class="noteBtn" type="button">Note</button></div></td>
+<td><span class="badge hard">Hard</span><span class="badge premium">Premium</span></td>
+</tr>
+</tbody></table></div></details>
+</section>
+</main>
+<footer>Progress and notes are saved in this browser.</footer>
+
+<dialog id="noteDialog" aria-labelledby="noteTitle"><div class="dialog-body"><h3 id="noteTitle" style="margin-top:0">Problem note</h3><textarea id="noteText" aria-label="Problem note" placeholder="Write your note…"></textarea><div class="dialog-actions"><button id="cancelNote">Cancel</button><button id="saveNote">Save note</button></div></div></dialog>
+
+<script>
+const rows=[...document.querySelectorAll('.problem-row')];
+const checks=[...document.querySelectorAll('.done')];
+const declaredTotal=checks.length;
+let activeFilter='all';
+const key='sql-interview-progress-v1', notesKey='sql-interview-notes-v1';
+let saved=JSON.parse(localStorage.getItem(key)||'{}');
+let notes=JSON.parse(localStorage.getItem(notesKey)||'{}');
+checks.forEach(c=>{c.checked=!!saved[c.dataset.id]; c.closest('tr').classList.toggle('done-row',c.checked);});
+function updateProgress(){
+  const done=checks.filter(c=>c.checked).length;
+  const percent=done/declaredTotal*100;
+  const ring=document.getElementById('overallChart');
+  ring.style.setProperty('--percent',percent+'%');
+  ring.setAttribute('aria-valuenow',done);
+  document.getElementById('chartPercent').textContent=Math.round(percent)+'%';
+  document.getElementById('chartTotal').textContent=done+' / '+declaredTotal+' completed';
+  ['easy','medium','hard'].forEach(difficulty=>{
+    const completed=checks.filter(c=>c.checked && c.closest('tr').dataset.difficulty===difficulty).length;
+    const chart=document.getElementById('chart-'+difficulty);
+    chart.value=completed;
+    document.getElementById('count-'+difficulty).textContent=completed+' / '+chart.max;
+  });
+  document.getElementById('heroDone').textContent=done+' / '+declaredTotal;
+  document.getElementById('progressText').textContent=done+' / '+declaredTotal;
+  document.getElementById('bar').style.width=(done/declaredTotal*100)+'%';
+  document.querySelectorAll('.subsection').forEach(sub=>{sub.querySelector('.sub-done').textContent=[...sub.querySelectorAll('.done')].filter(c=>c.checked).length;});
+  document.querySelectorAll('.section').forEach(sec=>{sec.querySelector('.section-done').textContent=[...sec.querySelectorAll('.done')].filter(c=>c.checked).length;});
+}
+checks.forEach(c=>c.addEventListener('change',()=>{saved[c.dataset.id]=c.checked;localStorage.setItem(key,JSON.stringify(saved));c.closest('tr').classList.toggle('done-row',c.checked);updateProgress();}));
+const subsections = [...document.querySelectorAll('.subsection')];
+let previousOpen = null;
+function applyFilters(){
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  rows.forEach(r=>{const okText=r.dataset.name.includes(q);const okDiff=activeFilter==='all'||r.dataset.difficulty===activeFilter;r.classList.toggle('hidden',!(okText&&okDiff));});
+  const filtering = Boolean(q) || activeFilter !== 'all';
+  if (filtering && !previousOpen) previousOpen = subsections.map(section => section.open);
+  subsections.forEach((section, index) => {
+    const hasMatch = Boolean(section.querySelector('.problem-row:not(.hidden)'));
+    section.classList.toggle('hidden', !hasMatch);
+    if (filtering && hasMatch) section.open = true;
+    if (!filtering && previousOpen) section.open = previousOpen[index];
+  });
+  if (!filtering) previousOpen = null;
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.toggle('hidden', !section.querySelector('.problem-row:not(.hidden)'));
+  });
+  const hasResults = rows.some(row => !row.classList.contains('hidden'));
+  document.getElementById('emptyResults').classList.toggle('hidden', hasResults);
+  document.getElementById('randomBtn').disabled = !hasResults;
+}
+document.getElementById('search').addEventListener('input',applyFilters);
+document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false');});b.classList.add('active');b.setAttribute('aria-pressed','true');activeFilter=b.dataset.filter;applyFilters();}));
+document.getElementById('randomBtn').addEventListener('click',()=>{const visible=rows.filter(r=>!r.classList.contains('hidden'));if(!visible.length)return;const r=visible[Math.floor(Math.random()*visible.length)];r.closest('details').open=true;r.scrollIntoView({behavior:'smooth',block:'center'});r.animate([{background:'#eae7ff'},{background:'transparent'}],{duration:1500});});
+const dlg=document.getElementById('noteDialog'), txt=document.getElementById('noteText'); let noteId=null;
+document.querySelectorAll('.noteBtn').forEach(btn=>btn.addEventListener('click',()=>{const row=btn.closest('tr'),c=row.querySelector('.done');noteId=c.dataset.id;document.getElementById('noteTitle').textContent=row.querySelector('.problem-name a').textContent;txt.value=notes[noteId]||'';dlg.showModal();}));
+document.getElementById('cancelNote').onclick=()=>dlg.close();
+document.getElementById('saveNote').onclick=()=>{notes[noteId]=txt.value;localStorage.setItem(notesKey,JSON.stringify(notes));dlg.close();};
+updateProgress();
+</script>
+</body>
+</html>
